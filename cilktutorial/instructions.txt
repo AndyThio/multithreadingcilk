@@ -1,0 +1,18 @@
+1. Set up CilkPlus
+2. Do multiplication example from here (slide 27): https://www.cs.princeton.edu/courses/archive/fall10/cos597C/docs/Cilk.pdf
+----- First way: divide the task as 1 spawn for each element
+----- Second way: divide the task as equal sized subtasks (binary tree)
+----- Compare the performance by varying number of threads from 1 to 32 ---- AA
+3. Do fibonacci example from here (slide 9): https://www.cs.princeton.edu/courses/archive/fall10/cos597C/docs/Cilk.pdf
+----- Use only 1 spawn call
+----- Use two spawn calls (same as slides)
+----- Compare the performance by varying number of threads from 1 to 32 ---- BB
+4. Read CLRS Chapter 27: Multithreaded Algorithms
+----- Understand the analysis from the book. Reason the performance in AA and BB. 
+----- Coding exmaples: matrix multiplication, merge sort
+
+
+Materials:
+https://www.cs.princeton.edu/courses/archive/fall10/cos597C/docs/Cilk.pdf
+https://www.vagrantup.com/
+

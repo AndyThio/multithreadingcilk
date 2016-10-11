@@ -9,7 +9,7 @@ using namespace std;
 using namespace std::chrono;
 
 //Serial Implmentation
-int fib_serial(int n){
+unsigned fib_serial(int n){
     if(n < 2){
         return n;
     }
@@ -21,7 +21,7 @@ int fib_serial(int n){
 }
 
 //Single Spawn Implementation
-int fib_1spawn(int n){
+unsigned fib_1spawn(int n){
     if(n < 2){
         return n;
     }
@@ -34,7 +34,7 @@ int fib_1spawn(int n){
 }
 
 //Double Spawn Implementation
-int fib_2spawn(int n){
+unsigned fib_2spawn(int n){
     if(n < 2){
         return n;
     }
@@ -46,13 +46,21 @@ int fib_2spawn(int n){
     return a+b;
 }
 
-int main(){
+int main(int argc, char *argv[]){
     //nth fib number
-    int n = 10;
-
+    int n = 40;
+    if (argc != 2){
+        cout << "Please include how many threads to run on" << endl;
+        return 1;
+    }
+    
     time_point<system_clock> start, end;
     duration<double> elapsed_time;
+    __cilkrts_set_param("nworkers",argv[1]);
 
+    int workers = __cilkrts_get_nworkers();
+    
+    if(workers == 1){
         //Serial
         cout << "Serial Implementation" <<endl;
         start= system_clock::now();
@@ -60,30 +68,25 @@ int main(){
         end = system_clock::now();
         elapsed_time = end-start;
         cout << "Time elapsed: " << elapsed_time.count() << endl << endl;
-
-    for(int numworker = 1; numworker < 32; ++numworker){
-        __cilkrts_set_param("nworkers",to_string(numworker).c_str());
-        //Single Spawn
-        cout << "Single Spawn Implementation" <<endl;
-        cout << "Using " << __cilkrts_get_nworkers() << " workers" << endl;
-        start= system_clock::now();
-        cout << fib_1spawn(n) << endl;
-        end = system_clock::now();
-        elapsed_time = end-start;
-        cout << "Time elapsed: " << elapsed_time.count() << endl << endl;
     }
 
-    for(int numworker = 1; numworker < 32; ++numworker){
-        __cilkrts_set_param("nworkers",to_string(numworker).c_str());
-        //Double Spawn
-        cout << "Double Spawn Implementation" <<endl;
-        cout << "Using " << __cilkrts_get_nworkers() << " workers" << endl;
-        start= system_clock::now();
-        cout << fib_2spawn(n) << endl;
-        end = system_clock::now();
-        elapsed_time = end-start;
-        cout << "Time elapsed: " << elapsed_time.count() << endl;
-    }
+    //Single Spawn
+    cout << "Single Spawn Implementation" <<endl;
+    cout << "Using " << __cilkrts_get_nworkers() << " workers" << endl;
+    start= system_clock::now();
+    cout << fib_1spawn(n) << endl;
+    end = system_clock::now();
+    elapsed_time = end-start;
+    cout << "Time elapsed: " << elapsed_time.count() << endl << endl;
+
+    //Double Spawn
+    cout << "Double Spawn Implementation" <<endl;
+    cout << "Using " << __cilkrts_get_nworkers() << " workers" << endl;
+    start= system_clock::now();
+    cout << fib_2spawn(n) << endl;
+    end = system_clock::now();
+    elapsed_time = end-start;
+    cout << "Time elapsed: " << elapsed_time.count() << endl << endl;
 
     return 0;
 }

@@ -1,0 +1,324 @@
+Serial Implementation
+102334155
+Time elapsed: 1.24308
+
+Single Spawn Implementation
+Using 1 workers
+102334155
+Time elapsed: 8.98225
+
+Double Spawn Implementation
+Using 1 workers
+102334155
+Time elapsed: 14.0104
+
+Single Spawn Implementation
+Using 2 workers
+102334155
+Time elapsed: 6.50699
+
+Double Spawn Implementation
+Using 2 workers
+102334155
+Time elapsed: 9.85347
+
+Single Spawn Implementation
+Using 3 workers
+102334155
+Time elapsed: 6.74045
+
+Double Spawn Implementation
+Using 3 workers
+102334155
+Time elapsed: 10.026
+
+Single Spawn Implementation
+Using 4 workers
+102334155
+Time elapsed: 6.98879
+
+Double Spawn Implementation
+Using 4 workers
+102334155
+Time elapsed: 13.1523
+
+Single Spawn Implementation
+Using 5 workers
+102334155
+Time elapsed: 8.39263
+
+Double Spawn Implementation
+Using 5 workers
+102334155
+Time elapsed: 11.2442
+
+Single Spawn Implementation
+Using 6 workers
+102334155
+Time elapsed: 7.97011
+
+Double Spawn Implementation
+Using 6 workers
+102334155
+Time elapsed: 13.216
+
+Single Spawn Implementation
+Using 7 workers
+102334155
+Time elapsed: 8.98058
+
+Double Spawn Implementation
+Using 7 workers
+102334155
+Time elapsed: 13.8196
+
+Single Spawn Implementation
+Using 8 workers
+102334155
+Time elapsed: 8.94756
+
+Double Spawn Implementation
+Using 8 workers
+102334155
+Time elapsed: 13.7781
+
+Single Spawn Implementation
+Using 9 workers
+102334155
+Time elapsed: 8.78483
+
+Double Spawn Implementation
+Using 9 workers
+102334155
+Time elapsed: 13.804
+
+Single Spawn Implementation
+Using 10 workers
+102334155
+Time elapsed: 8.84823
+
+Double Spawn Implementation
+Using 10 workers
+102334155
+Time elapsed: 13.7881
+
+Single Spawn Implementation
+Using 11 workers
+102334155
+Time elapsed: 8.96491
+
+Double Spawn Implementation
+Using 11 workers
+102334155
+Time elapsed: 13.7856
+
+Single Spawn Implementation
+Using 12 workers
+102334155
+Time elapsed: 8.81325
+
+Double Spawn Implementation
+Using 12 workers
+102334155
+Time elapsed: 13.8376
+
+Single Spawn Implementation
+Using 13 workers
+102334155
+Time elapsed: 8.93931
+
+Double Spawn Implementation
+Using 13 workers
+102334155
+Time elapsed: 13.6523
+
+Single Spawn Implementation
+Using 14 workers
+102334155
+Time elapsed: 9.01514
+
+Double Spawn Implementation
+Using 14 workers
+102334155
+Time elapsed: 13.7797
+
+Single Spawn Implementation
+Using 15 workers
+102334155
+Time elapsed: 8.84041
+
+Double Spawn Implementation
+Using 15 workers
+102334155
+Time elapsed: 13.9607
+
+Single Spawn Implementation
+Using 16 workers
+102334155
+Time elapsed: 8.81611
+
+Double Spawn Implementation
+Using 16 workers
+102334155
+Time elapsed: 13.9766
+
+Single Spawn Implementation
+Using 17 workers
+102334155
+Time elapsed: 9.02901
+
+Double Spawn Implementation
+Using 17 workers
+102334155
+Time elapsed: 14.1702
+
+Single Spawn Implementation
+Using 18 workers
+102334155
+Time elapsed: 9.19552
+
+Double Spawn Implementation
+Using 18 workers
+102334155
+Time elapsed: 13.7917
+
+Single Spawn Implementation
+Using 19 workers
+102334155
+Time elapsed: 9.0066
+
+Double Spawn Implementation
+Using 19 workers
+102334155
+Time elapsed: 13.987
+
+Single Spawn Implementation
+Using 20 workers
+102334155
+Time elapsed: 9.01983
+
+Double Spawn Implementation
+Using 20 workers
+102334155
+Time elapsed: 13.955
+
+Single Spawn Implementation
+Using 21 workers
+102334155
+Time elapsed: 9.01169
+
+Double Spawn Implementation
+Using 21 workers
+102334155
+Time elapsed: 22.1804
+
+Single Spawn Implementation
+Using 22 workers
+102334155
+Time elapsed: 30.3976
+
+Double Spawn Implementation
+Using 22 workers
+102334155
+Time elapsed: 46.2132
+
+Single Spawn Implementation
+Using 23 workers
+102334155
+Time elapsed: 30.4031
+
+Double Spawn Implementation
+Using 23 workers
+102334155
+Time elapsed: 41.7953
+
+Single Spawn Implementation
+Using 24 workers
+102334155
+Time elapsed: 28.2092
+
+Double Spawn Implementation
+Using 24 workers
+102334155
+Time elapsed: 37.7993
+
+Single Spawn Implementation
+Using 25 workers
+102334155
+Time elapsed: 22.4222
+
+Double Spawn Implementation
+Using 25 workers
+102334155
+Time elapsed: 39.7847
+
+Single Spawn Implementation
+Using 26 workers
+102334155
+Time elapsed: 30.5905
+
+Double Spawn Implementation
+Using 26 workers
+102334155
+Time elapsed: 46.2161
+
+Single Spawn Implementation
+Using 27 workers
+102334155
+Time elapsed: 30.5975
+
+Double Spawn Implementation
+Using 27 workers
+102334155
+Time elapsed: 46.7961
+
+Single Spawn Implementation
+Using 28 workers
+102334155
+Time elapsed: 31.4183
+
+Double Spawn Implementation
+Using 28 workers
+102334155
+Time elapsed: 46.7764
+
+Single Spawn Implementation
+Using 29 workers
+102334155
+Time elapsed: 30.9993
+
+Double Spawn Implementation
+Using 29 workers
+102334155
+Time elapsed: 47.7956
+
+Single Spawn Implementation
+Using 30 workers
+102334155
+Time elapsed: 30.194
+
+Double Spawn Implementation
+Using 30 workers
+102334155
+Time elapsed: 46.4019
+
+Single Spawn Implementation
+Using 31 workers
+102334155
+Time elapsed: 32.1967
+
+Double Spawn Implementation
+Using 31 workers
+102334155
+Time elapsed: 47.3973
+
+Single Spawn Implementation
+Using 32 workers
+102334155
+Time elapsed: 32.0407
+
+Double Spawn Implementation
+Using 32 workers
+102334155
+Time elapsed: 46.765
+

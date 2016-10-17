@@ -48,18 +48,14 @@ unsigned fib_2spawn(int n){
 
 int main(int argc, char *argv[]){
     //nth fib number
-    int n = 40;
-    if (argc != 2){
-        cout << "Please include how many threads to run on" << endl;
-        return 1;
-    }
-    
+    int n = 42;
+
     time_point<system_clock> start, end;
     duration<double> elapsed_time;
-    __cilkrts_set_param("nworkers",argv[1]);
 
+    __cilkrts_set_param("nworkers", argv[1]);
     int workers = __cilkrts_get_nworkers();
-    
+
     if(workers == 1){
         //Serial
         cout << "Serial Implementation" <<endl;

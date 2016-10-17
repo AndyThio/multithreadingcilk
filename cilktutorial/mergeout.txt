@@ -1,0 +1,323 @@
+Vector Size: 1000000
+
+
+Serial Implmentation
+Time elapsed: 2.51265
+
+Single Spawn
+Using 1 workers
+Time elapsed: 2.48915
+
+Double Spawn
+Using 1 workers
+Time elapsed: 2.50881
+Vector Size: 1000000
+
+
+Single Spawn
+Using 2 workers
+Time elapsed: 1.43491
+
+Double Spawn
+Using 2 workers
+Time elapsed: 1.4141
+Vector Size: 1000000
+
+
+Single Spawn
+Using 3 workers
+Time elapsed: 1.00019
+
+Double Spawn
+Using 3 workers
+Time elapsed: 1.07097
+Vector Size: 1000000
+
+
+Single Spawn
+Using 4 workers
+Time elapsed: 0.788597
+
+Double Spawn
+Using 4 workers
+Time elapsed: 0.776163
+Vector Size: 1000000
+
+
+Single Spawn
+Using 5 workers
+Time elapsed: 0.756046
+
+Double Spawn
+Using 5 workers
+Time elapsed: 0.723891
+Vector Size: 1000000
+
+
+Single Spawn
+Using 6 workers
+Time elapsed: 0.700839
+
+Double Spawn
+Using 6 workers
+Time elapsed: 0.708885
+Vector Size: 1000000
+
+
+Single Spawn
+Using 7 workers
+Time elapsed: 0.655708
+
+Double Spawn
+Using 7 workers
+Time elapsed: 0.636693
+Vector Size: 1000000
+
+
+Single Spawn
+Using 8 workers
+Time elapsed: 0.633366
+
+Double Spawn
+Using 8 workers
+Time elapsed: 0.627668
+Vector Size: 1000000
+
+
+Single Spawn
+Using 9 workers
+Time elapsed: 0.61564
+
+Double Spawn
+Using 9 workers
+Time elapsed: 0.690334
+Vector Size: 1000000
+
+
+Single Spawn
+Using 10 workers
+Time elapsed: 0.64372
+
+Double Spawn
+Using 10 workers
+Time elapsed: 0.626632
+Vector Size: 1000000
+
+
+Single Spawn
+Using 11 workers
+Time elapsed: 0.632152
+
+Double Spawn
+Using 11 workers
+Time elapsed: 0.612094
+Vector Size: 1000000
+
+
+Single Spawn
+Using 12 workers
+Time elapsed: 0.733923
+
+Double Spawn
+Using 12 workers
+Time elapsed: 0.615603
+Vector Size: 1000000
+
+
+Single Spawn
+Using 13 workers
+Time elapsed: 0.722108
+
+Double Spawn
+Using 13 workers
+Time elapsed: 0.620114
+Vector Size: 1000000
+
+
+Single Spawn
+Using 14 workers
+Time elapsed: 0.663736
+
+Double Spawn
+Using 14 workers
+Time elapsed: 0.721885
+Vector Size: 1000000
+
+
+Single Spawn
+Using 15 workers
+Time elapsed: 0.689335
+
+Double Spawn
+Using 15 workers
+Time elapsed: 0.611094
+Vector Size: 1000000
+
+
+Single Spawn
+Using 16 workers
+Time elapsed: 0.695322
+
+Double Spawn
+Using 16 workers
+Time elapsed: 0.737932
+Vector Size: 1000000
+
+
+Single Spawn
+Using 17 workers
+Time elapsed: 0.644685
+
+Double Spawn
+Using 17 workers
+Time elapsed: 0.707849
+Vector Size: 1000000
+
+
+Single Spawn
+Using 18 workers
+Time elapsed: 0.736591
+
+Double Spawn
+Using 18 workers
+Time elapsed: 0.611593
+Vector Size: 1000000
+
+
+Single Spawn
+Using 19 workers
+Time elapsed: 0.74664
+
+Double Spawn
+Using 19 workers
+Time elapsed: 0.625632
+Vector Size: 1000000
+
+
+Single Spawn
+Using 20 workers
+Time elapsed: 0.773571
+
+Double Spawn
+Using 20 workers
+Time elapsed: 0.670251
+Vector Size: 1000000
+
+
+Single Spawn
+Using 21 workers
+Time elapsed: 0.684299
+
+Double Spawn
+Using 21 workers
+Time elapsed: 0.65073
+Vector Size: 1000000
+
+
+Single Spawn
+Using 22 workers
+Time elapsed: 0.773707
+
+Double Spawn
+Using 22 workers
+Time elapsed: 0.618113
+Vector Size: 1000000
+
+
+Single Spawn
+Using 23 workers
+Time elapsed: 0.66126
+
+Double Spawn
+Using 23 workers
+Time elapsed: 0.721418
+Vector Size: 1000000
+
+
+Single Spawn
+Using 24 workers
+Time elapsed: 0.670791
+
+Double Spawn
+Using 24 workers
+Time elapsed: 0.647221
+Vector Size: 1000000
+
+
+Single Spawn
+Using 25 workers
+Time elapsed: 0.803639
+
+Double Spawn
+Using 25 workers
+Time elapsed: 0.631679
+Vector Size: 1000000
+
+
+Single Spawn
+Using 26 workers
+Time elapsed: 0.671758
+
+Double Spawn
+Using 26 workers
+Time elapsed: 0.700334
+Vector Size: 1000000
+
+
+Single Spawn
+Using 27 workers
+Time elapsed: 0.754851
+
+Double Spawn
+Using 27 workers
+Time elapsed: 0.620643
+Vector Size: 1000000
+
+
+Single Spawn
+Using 28 workers
+Time elapsed: 0.781172
+
+Double Spawn
+Using 28 workers
+Time elapsed: 0.611125
+Vector Size: 1000000
+
+
+Single Spawn
+Using 29 workers
+Time elapsed: 0.719523
+
+Double Spawn
+Using 29 workers
+Time elapsed: 0.74796
+Vector Size: 1000000
+
+
+Single Spawn
+Using 30 workers
+Time elapsed: 0.691853
+
+Double Spawn
+Using 30 workers
+Time elapsed: 0.673761
+Vector Size: 1000000
+
+
+Single Spawn
+Using 31 workers
+Time elapsed: 0.766576
+
+Double Spawn
+Using 31 workers
+Time elapsed: 0.648222
+Vector Size: 1000000
+
+
+Single Spawn
+Using 32 workers
+Time elapsed: 0.784427
+
+Double Spawn
+Using 32 workers
+Time elapsed: 0.689296

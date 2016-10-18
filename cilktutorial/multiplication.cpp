@@ -39,20 +39,33 @@ int product_for(const vector<int> &nums){
 }
 
 //Single Spawn
+//
+int product_1spawn(const vector<int> &nums,vector<int>::iterator begin, vector<int>::iterator end){
+    if(distance(begin,end) <= 1){
+        return *begin;
+    }
+    else{
+        int sum1 = cilk_spawn product_1spawn(nums, begin, begin+ distance(begin,end)/2);
+        int sum2 = product_1spawn(nums, begin+distance(begin,end)/2, end);
+        cilk_sync;
+        return sum1*sum2;
+    }
+}
+/*
 int product_1spawn( const vector<int> &nums){
     int n = nums.size();
     if (n==1){
         return nums.front();
     }
     else{
-        vector<int> s (nums.begin()+n-n/2,nums.end());
-        vector<int> v (nums.begin(),nums.begin()+n-n/2);
+
         int sum1 = cilk_spawn product_1spawn(v);
         int sum2 = product_1spawn(s);
         cilk_sync;
         return sum1*sum2;
     }
 }
+*/
 
 //Double Spawn
 int product_2spawn(const vector<int> &nums){
@@ -72,8 +85,9 @@ int product_2spawn(const vector<int> &nums){
 
 int main(int argc, char* argv[]){
     vector<int> test;
-    int test_size = 1000;
+    int test_size = 100000;
     int largest_number = 200;
+
 
     srand(time(0));
 
@@ -83,6 +97,13 @@ int main(int argc, char* argv[]){
 
     cout << "Vector Size: " << test.size() << endl;
     cout << endl << endl;
+
+    /*
+    for(auto &e: test){
+        cout << e << ", ";
+    }
+    cout << endl;
+    */
 
     time_point<system_clock> start, end;
 
@@ -100,6 +121,7 @@ int main(int argc, char* argv[]){
         cout << "Time elapsed: " << elapsed_time.count() << endl << endl;
     }
 
+/*
     //Spawn every element
     cout << "Spawn every element" << endl;
     start = system_clock::now();
@@ -109,7 +131,6 @@ int main(int argc, char* argv[]){
     cout << "Using " << workers << " workers" << endl;
     cout << "Time elapsed: " << elapsed_time.count() << endl << endl;
 
-    /*
     //Cilk For
     cout << "Cilk For" << endl;
     start = system_clock::now();
@@ -123,7 +144,7 @@ int main(int argc, char* argv[]){
     //Single Spawn
     cout << "Single Spawn" << endl;
     start = system_clock::now();
-    cout << product_1spawn(test) << endl;
+    cout << product_1spawn(test,test.begin(),test.end()) << endl;
     end = system_clock::now();
     elapsed_time =end - start;
     cout << "Using " << workers << " workers" << endl;

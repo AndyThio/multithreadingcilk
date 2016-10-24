@@ -68,16 +68,13 @@ int product_1spawn( const vector<int> &nums){
 */
 
 //Double Spawn
-int product_2spawn(const vector<int> &nums){
-    int n = nums.size();
-    if (n==1){
-        return nums.front();
+int product_2spawn(const vector<int> &nums,vector<int>::iterator begin, vector<int>::iterator end){
+    if(distance(begin,end) <= 1){
+        return *begin;
     }
     else{
-        vector<int> s (nums.begin()+n-n/2,nums.end());
-        vector<int> v (nums.begin(),nums.begin()+n-n/2);
-        int sum1 = cilk_spawn product_2spawn(v);
-        int sum2 = cilk_spawn product_2spawn(s);
+        int sum1 = cilk_spawn product_2spawn(nums, begin, begin+ distance(begin,end)/2);
+        int sum2 = cilk_spawn product_2spawn(nums, begin+distance(begin,end)/2, end);
         cilk_sync;
         return sum1*sum2;
     }
@@ -153,7 +150,7 @@ int main(int argc, char* argv[]){
     //Double Spawn
     cout << "Double Spawn" << endl;
     start = system_clock::now();
-    cout << product_2spawn(test) << endl;
+    cout << product_2spawn(test, test.begin(),test.end()) << endl;
     end = system_clock::now();
     elapsed_time = end - start;
     cout << "Using " << workers << " workers" << endl;

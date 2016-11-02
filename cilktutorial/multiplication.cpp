@@ -25,6 +25,7 @@ int product_perelem(const vector<int> &nums,vector<int>::iterator curr){
     else{
         int sum1 = cilk_spawn product_perelem(nums, curr+1);
         int sum2 = *curr;
+        cilk_sync;
         return sum1*sum2;
     }
 }
@@ -92,8 +93,8 @@ int main(int argc, char* argv[]){
         test.emplace_back(rand()%largest_number+1);
     }
 
-    cout << "Vector Size: " << test.size() << endl;
-    cout << endl << endl;
+    //cout << "Vector Size: " << test.size() << endl;
+    //cout << endl << endl;
 
     /*
     for(auto &e: test){
@@ -136,24 +137,30 @@ int main(int argc, char* argv[]){
     elapsed_time =end - start;
     cout << "Using " << workers << " workers" << endl;
     cout << "Time elapsed: " << elapsed_time.count() << endl << endl;
-    */
 
+    */
     //Single Spawn
-    cout << "Single Spawn" << endl;
+    //cout << "Single Spawn" << endl;
     start = system_clock::now();
     cout << product_1spawn(test,test.begin(),test.end()) << endl;
+    //product_1spawn(test,test.begin(),test.end());
     end = system_clock::now();
     elapsed_time =end - start;
-    cout << "Using " << workers << " workers" << endl;
-    cout << "Time elapsed: " << elapsed_time.count() << endl << endl;
+    //cout << "Using " << workers << " workers" << endl;
+    //cout << "Time elapsed: ";
+    cout << elapsed_time.count() << endl;
 
+/*
     //Double Spawn
-    cout << "Double Spawn" << endl;
+    //cout << "Double Spawn" << endl;
     start = system_clock::now();
-    cout << product_2spawn(test, test.begin(),test.end()) << endl;
+    //cout << product_2spawn(test, test.begin(),test.end()) << endl;
+    product_2spawn(test, test.begin(),test.end());
     end = system_clock::now();
     elapsed_time = end - start;
-    cout << "Using " << workers << " workers" << endl;
-    cout << "Time elapsed: " << elapsed_time.count() << endl;
+    //cout << "Using " << workers << " workers" << endl;
+    //cout << "Time elapsed: ";
+    cout << elapsed_time.count() << endl;
+    */
     return 0;
 }

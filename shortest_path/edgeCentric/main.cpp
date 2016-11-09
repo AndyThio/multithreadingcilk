@@ -48,20 +48,18 @@ bool non_inf(vector<adjList> &v){
     return true;
 }
 
-void vertexCentric(unsigned int index, vector<adjList> &v){
+void edgeCentric(pair<int,int> edge,int index , vector<adjList> &v){
     unsigned int temp;
     unsigned int old;
     do{
         temp = v.at(index).value;
         old = temp;
-        for(auto &e: v.at(index).incoming_edges){
-            unsigned int p = inf;
-            if(v.at(e.first).value != inf){
-                p = v.at(e.first).value + e.second;
-            }
-            if(temp > p){
-                temp = p;
-            }
+        unsigned int p = inf;
+        if(v.at(edge.first).value != inf){
+            p = v.at(edge.first).value + edge.second;
+        }
+        if(temp > p){
+            temp = p;
         }
     // cout << "Old: " << old << endl << "temp: " << temp << endl << endl;
     }while(!v.at(index).value.compare_exchange_strong(old, temp));
@@ -136,11 +134,15 @@ int main(){
     start = system_clock::now();
     while(!non_inf(graph)){
         cilk_for(unsigned int i = 0; i < graph.size(); ++i){
-            vertexCentric(i, graph);
+            cilk_for(unsigned int j = 0; j < graph.at(i).incoming_edges.size(); ++j){
+                edgeCentric(graph.at(i).incoming_edges.at(j), i, graph);
+            }
         }
     }
     cilk_for(unsigned int i = 0; i < graph.size(); ++i){
-        vertexCentric(i, graph);
+        cilk_for(unsigned int j = 0; j < graph.at(i).incoming_edges.size(); ++j){
+            edgeCentric(graph.at(i).incoming_edges.at(j), i, graph);
+        }
     }
     
     end = system_clock::now();

@@ -12,6 +12,9 @@
 using namespace std;
 using namespace std::chrono;
 
+#include "vectorRed.h"
+#include "vectorRed.cpp"
+
 const unsigned int inf = numeric_limits<unsigned int>::max();
 
 struct valueMonoid;
@@ -62,23 +65,27 @@ struct valueMonoid : public cilk::monoid_base<, valueView> {
 };
 */
 
- struct adjList_red{
+struct adjList_red{
     cilk::reducer<valueMonoid> value;
     vector<pair<int,unsigned int> > outgoing_edges;
     adjList_red();
     adjList_red(const adjList_red& copyfrom);
- };
+    adjList_red& operator=(const adjList_red& copyfrom);
+};
 
 
 adjList_red::adjList_red(){
     value->add_compare(inf);
 }
- adjList_red::adjList_red(const adjList_red& copyfrom){
+adjList_red::adjList_red(const adjList_red& copyfrom){
     outgoing_edges = copyfrom.outgoing_edges;
     value->add_compare(copyfrom.value->view_get_value());
- }
-
- void update_red(unsigned int index,  vector<adjList_red> &graph, unsigned int value){
+}
+adjList_red& adjList_red::operator=(const adjList_red& copyfrom){
+    outgoing_edges = copyfrom.outgoing_edges;
+    value->add_compare(copyfrom.value->view_get_value());
+}
+ void update_red(unsigned int index,  vectorRed<adjList_red> &graph, unsigned int value){
      if(graph.at(index).value->get_lessthan(value)){
          cilk_for(int i = 0; i < graph.at(index).outgoing_edges.size(); ++i){
              update_red(graph.at(index).outgoing_edges.at(i).first, graph,
@@ -128,8 +135,7 @@ int main(){
     adjList_red list [24000];
     list[0].value -> add_compare(inf);
 
-return 0;
-     vector<adjList_red> graph2;
+     vectorRed<adjList_red> graph2;
      adjList_red new2;
      new2.value->add_compare(inf);
      //new2.outgoing_edges.emplace_back(make_pair(1,4));
@@ -179,8 +185,8 @@ return 0;
      }
      */
      cout <<"red" << endl;
-     for(auto &e: graph2){
-         cout << e.value->view_get_value() << endl;
+     for(unsigned i = 0; graph2.size() > i ; ++i){
+         cout << graph2.at(i).value->view_get_value() << endl;
      }
     return 0;
 }

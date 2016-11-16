@@ -11,10 +11,10 @@ template <typename T>
 void vectorRed<T>::expand(){
     if(cap == 0){
         cap = 1;
-        elements = cilk::aligned_new(T[1]);
+        elements = cilk::aligned_new<T>([1]);
     }
     cap *= 2;
-    T* temp = cilk::aligned_new(T[cap]);
+    T* temp = cilk::aligned_new<T>([cap]);
     for (unsigned i = 0; i < sz; i++)
     {
         temp[i] = elements[i];

@@ -12,8 +12,6 @@
 using namespace std;
 using namespace std::chrono;
 
-#include "vectorRed.h"
-#include "vectorRed.cpp"
 
 const unsigned int inf = numeric_limits<unsigned int>::max();
 
@@ -66,7 +64,7 @@ struct valueMonoid : public cilk::monoid_base<, valueView> {
 */
 
 struct adjList_red{
-    cilk::reducer<valueMonoid> value;
+    cilk::reducer<valueMonoid> *value;
     vector<pair<int,unsigned int> > outgoing_edges;
     adjList_red();
     adjList_red(const adjList_red& copyfrom);
@@ -75,7 +73,6 @@ struct adjList_red{
 
 
 adjList_red::adjList_red(){
-    value->add_compare(inf);
 }
 adjList_red::adjList_red(const adjList_red& copyfrom){
     outgoing_edges = copyfrom.outgoing_edges;
@@ -132,12 +129,13 @@ int main(){
 
     // new1.outgoing_edges.clear();
     // graph.emplace_back(new1);
+    
     adjList_red list [24000];
     list[0].value -> add_compare(inf);
 
-     vectorRed<adjList_red> graph2;
+     vector<adjList_red> graph2;
      adjList_red new2;
-     new2.value->add_compare(inf);
+     new2.value*->add_compare(inf);
      //new2.outgoing_edges.emplace_back(make_pair(1,4));
      //new2.outgoing_edges.emplace_back(make_pair(2,2));
      //graph2.emplace_back(new2);

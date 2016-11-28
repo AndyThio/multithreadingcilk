@@ -7,64 +7,72 @@ using namespace std;
 
 #include "vectorRed.h"
 
-template <typename T>
-void vectorRed<T>::expand(){
+
+void vectorRed::expand(){
     if(cap == 0){
         cap = 1;
-        elements = cilk::aligned_new<T>([1]);
     }
     cap *= 2;
-    T* temp = cilk::aligned_new<T>([cap]);
-    for (unsigned i = 0; i < sz; i++)
+    cilk::reducer<valueMonoid>* temp = (cilk::reducer<valueMonoid>*)malloc(cap);
+    for (unsigned int i = 0; i < sz; i++)
     {
-        temp[i] = elements[i];
+        auto temp2 = elements[i]->view_get_value();
+        cilk::reducer<valueMonoid> temp1;
+        temp1->add_compare(temp2);
+        temp[i] = temp1;
     }
-    cilk::aligned_delete(elements);
+    free(elements);
     
     elements = temp;
 }
 
-template <typename T>
-vectorRed<T>::vectorRed()
+
+vectorRed::vectorRed()
     :elements(0),sz(0),cap(0)
 {}
 
-template <typename T>
-vectorRed<T>::vectorRed(const vectorRed<T> &copyfrom){
-    for (unsigned i = 0; i < sz; i++)
+
+vectorRed::vectorRed(const vectorRed &copyfrom){
+    if(cap < copyfrom.cap){
+        expand();
+    }
+    for (unsigned int i = 0; i < sz; i++)
     {
-        elements[i] = copyfrom.elements[i];
+        auto temp = copyfrom.elements[i]->view_get_value();
+        elements[i] = cilk::aligned_new< cilk::reducer<valueMonoid> >();
+        elements[i]->add_compare(temp);
     }
 }
 
-template <typename T>
-vectorRed<T>::~vectorRed(){
-    cilk::aligned_delete(elements);
+
+vectorRed::~vectorRed(){
+    free(elements);
 }
 
-template <typename T>
-void vectorRed<T>::push_back(T value){
+
+void vectorRed::push_back(unsigned int value){
     ++sz;
     if(sz > cap){
         expand();
     }
-    elements[sz-1] = value;
+    elements[sz-1] = cilk::aligned_new< cilk::reducer<valueMonoid> >();
+    elements[sz-1]->add_compare(value);
 }
 
-template <typename T>
-void vectorRed<T>::pop_back(){
+
+void vectorRed::pop_back(){
     if(sz > 0){
         sz--;
     }
 }
 
-template <typename T>
-int vectorRed<T>::size(){
+
+int vectorRed::size(){
     return sz;
 }
 
-template <typename T>
-T & vectorRed<T>::at(unsigned index){
+\
+cilk::reducer<valueMonoid> & vectorRed<T>::at(unsigned int index){
     if (sz > index){
         return elements[index];
     }

@@ -4,20 +4,22 @@
 #include <iostream>
 using namespace std;
 
-template <typename T>
+
+#include "reducerClass.cpp"
+
 class vectorRed{
     private:
-        T *elements;
+        cilk::reducer<valueMonoid> *elements;
         int sz;
         int cap;
     public:
         vectorRed();
-        vectorRed(const vectorRed<T> &copyfrom);
+        vectorRed(const vectorRed &copyfrom);
         ~vectorRed();
-        void push_back(T element);
+        void push_back(unsigned int value);
         void pop_back();
         int size();
-        T & at(unsigned index);
+        cilk::reducer<valueMonoid> & at(unsigned index);
     private:
         void expand();
         

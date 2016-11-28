@@ -12,17 +12,19 @@
 using namespace std;
 using namespace std::chrono;
 
+#include "vectorRed.h"
 
 const unsigned int inf = numeric_limits<unsigned int>::max();
 
-struct valueMonoid;
-class valueView;
+// struct valueMonoid;
+// class valueView;
 // struct adjList{
 //     vector<pair<int,int> > outgoing_edges;
 //     unsigned int value;
 // };
 
 
+/*
 class valueView{
     friend class valueMonoid;
     unsigned int value;
@@ -48,7 +50,7 @@ struct valueMonoid : public cilk::monoid_base<unsigned int , valueView> {
         }
     }
 };
-
+*/
 /*
 template <typename T>
 struct valueMonoid : public cilk::monoid_base<, valueView> {
@@ -62,9 +64,9 @@ struct valueMonoid : public cilk::monoid_base<, valueView> {
     }
 };
 */
+/*
 
 struct adjList_red{
-    cilk::reducer<valueMonoid> *value;
     vector<pair<int,unsigned int> > outgoing_edges;
     adjList_red();
     adjList_red(const adjList_red& copyfrom);
@@ -90,7 +92,7 @@ adjList_red& adjList_red::operator=(const adjList_red& copyfrom){
          }
      }
  }
-
+*/
 // void update(unsigned int index,  vector<adjList> &graph, unsigned int value){
 //     if(value < graph.at(index).value){
 //         graph.at(index).value = value;
@@ -130,17 +132,16 @@ int main(){
     // new1.outgoing_edges.clear();
     // graph.emplace_back(new1);
     
-    adjList_red list [24000];
-    list[0].value -> add_compare(inf);
-
-     vector<adjList_red> graph2;
-     adjList_red new2;
-     new2.value*->add_compare(inf);
+    // adjList_red list [24000];
+    // list[0].value -> add_compare(inf);
+    
+    
+     vectorRed graph2;
      //new2.outgoing_edges.emplace_back(make_pair(1,4));
      //new2.outgoing_edges.emplace_back(make_pair(2,2));
      //graph2.emplace_back(new2);
-     graph2.push_back(adjList_red());
-return 0;
+     graph2.push_back(5);
+    return 0;
 /*
      new2.outgoing_edges.clear();
      new2.outgoing_edges.emplace_back(make_pair(2,5));
@@ -171,7 +172,7 @@ return 0;
      end = system_clock::now();
      elapsed_time = end - start;
      cout << "Time elapsed: " << elapsed_time.count() << endl;
-*/
+     
      start = system_clock::now();
      update_red(0,graph2, 0);
      end = system_clock::now();
@@ -184,7 +185,7 @@ return 0;
      */
      cout <<"red" << endl;
      for(unsigned i = 0; graph2.size() > i ; ++i){
-         cout << graph2.at(i).value->view_get_value() << endl;
+         cout << graph2.at(i)->view_get_value() << endl;
      }
     return 0;
 }

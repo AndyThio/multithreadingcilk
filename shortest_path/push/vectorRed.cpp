@@ -7,19 +7,19 @@ using namespace std;
 
 #include "vectorRed.h"
 
-
 void vectorRed::expand(){
     if(cap == 0){
         cap = 1;
     }
     cap *= 2;
     cilk::reducer<valueMonoid>* temp = (cilk::reducer<valueMonoid>*)malloc(cap);
-    for (unsigned int i = 0; i < sz; i++)
+    for (unsigned int j = 0; j < cap; j++){
+        temp[j]->reset_value();
+    }
+    for (unsigned int i = 0; i < sz-1; i++)
     {
         auto temp2 = elements[i]->view_get_value();
-        cilk::reducer<valueMonoid> temp1;
-        temp1->add_compare(temp2);
-        temp[i] = temp1;
+        temp[i]->add_compare(temp2);
     }
     free(elements);
     
@@ -39,7 +39,6 @@ vectorRed::vectorRed(const vectorRed &copyfrom){
     for (unsigned int i = 0; i < sz; i++)
     {
         auto temp = copyfrom.elements[i]->view_get_value();
-        elements[i] = cilk::aligned_new< cilk::reducer<valueMonoid> >();
         elements[i]->add_compare(temp);
     }
 }
@@ -55,14 +54,18 @@ void vectorRed::push_back(unsigned int value){
     if(sz > cap){
         expand();
     }
-    elements[sz-1] = cilk::aligned_new< cilk::reducer<valueMonoid> >();
+    cout <<elements[sz-1]->view_get_value() <<endl;
+    cout << "Value: " << value << endl;
     elements[sz-1]->add_compare(value);
+    
+    cout <<elements[sz-1]->view_get_value() <<endl;
 }
 
 
 void vectorRed::pop_back(){
     if(sz > 0){
         sz--;
+        elements[sz]->reset_value();
     }
 }
 
@@ -71,8 +74,8 @@ int vectorRed::size(){
     return sz;
 }
 
-\
-cilk::reducer<valueMonoid> & vectorRed<T>::at(unsigned int index){
+
+cilk::reducer<valueMonoid> &vectorRed::at(unsigned int index){
     if (sz > index){
         return elements[index];
     }

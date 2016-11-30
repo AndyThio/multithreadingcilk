@@ -52,6 +52,8 @@ struct valueMonoid : public cilk::monoid_base<unsigned int , valueView> {
 
 
 int main(){
+    cilk::reducer<valueMonoid> isitinf;
+    cout << isitinf->view_get_value() << endl;
     vector < cilk::reducer<valueMonoid>* > test1;
     unsigned int size = 15;
     cout << "entering forloop1" << endl;

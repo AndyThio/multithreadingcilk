@@ -134,14 +134,21 @@ int main(){
     
     // adjList_red list [24000];
     // list[0].value -> add_compare(inf);
-    
+    cout << numeric_limits<unsigned int>::max()<< endl;
     
      vectorRed graph2;
      //new2.outgoing_edges.emplace_back(make_pair(1,4));
      //new2.outgoing_edges.emplace_back(make_pair(2,2));
      //graph2.emplace_back(new2);
-     graph2.push_back(5);
-    return 0;
+     graph2.push_back(inf);
+     graph2.push_back(15);
+     
+     graph2.at(1)->add_compare(4);
+     graph2.at(1)->add_compare(2);
+     graph2.at(1)->add_compare(5);
+     
+     
+    // return 0;
 /*
      new2.outgoing_edges.clear();
      new2.outgoing_edges.emplace_back(make_pair(2,5));

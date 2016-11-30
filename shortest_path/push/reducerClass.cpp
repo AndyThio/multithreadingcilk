@@ -17,11 +17,15 @@ class valueView{
                 value = updated;
             }
         }
+        void reset_value(){
+            value = numeric_limits<unsigned int>::max();
+        }
         bool get_lessthan(unsigned int updated){
             return value < updated;
         }
         unsigned int view_get_value()const  {return value;}
 };
+
 
 struct valueMonoid : public cilk::monoid_base<unsigned int , valueView> {
     static void identity(valueView* view){

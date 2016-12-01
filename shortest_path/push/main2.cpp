@@ -1,8 +1,11 @@
 #include <iostream>
+#include <fstream>
 #include <chrono>
 #include <cilk/cilk.h>
 #include <cilk/cilk_api.h>
 #include <cilk/reducer.h>
+#include <string>
+#include <cstring>
 #include <vector>
 #include <ctime>
 #include <utility>
@@ -12,7 +15,7 @@
 using namespace std;
 using namespace std::chrono;
 
-#include "vectorRed.h"
+#include "reducerClass.cpp"
 
 const unsigned int inf = numeric_limits<unsigned int>::max();
 
@@ -36,14 +39,10 @@ adjList_red& adjList_red::operator=(const adjList_red& copyfrom){
 }
 */
 void update_red(unsigned int index, vector<vector<pair<int,unsigned int> > > &graph,
-    vectorRed &cost, unsigned int value, unsigned int prev_index){
-        cout << "made it here" << endl;
-        cout << "value: " << value << ";; index: " << index << endl;
-        cout << cost.at(index)->view_get_value() << endl;
-        cout << "end information" << endl;
-    if(cost.at(index)->is_lessthan(value)){
-        cout << "made it here too" << endl;
-        cost.at(index)->add_compare(value,prev_index);
+    vector<cilk::reducer<valueMonoid>* > &cost, unsigned int value, unsigned int prev_index){
+
+    if((*cost.at(index))->is_lessthan(value)){
+        (*cost.at(index))->add_compare(value,prev_index);
         
         cilk_for(int i = 0; i < graph.at(index).size(); ++i){
             update_red(graph.at(index).at(i).first, graph, cost,
@@ -62,14 +61,50 @@ void update_red(unsigned int index, vector<vector<pair<int,unsigned int> > > &gr
 //     }
 // }
 
-int main(){
+int main(int argc, char* argv[]){
     vector<pair<int,unsigned int> > outgoing_edges;
     vector<vector<pair<int,unsigned int> > > graph;
-    vectorRed cost(6);
-    for(unsigned i = 0; cost.size() > i ; ++i){
-         cout << cost.at(i)->view_get_value() << endl;
-     }
-
+    vector<cilk::reducer<valueMonoid>* > cost;
+    
+    fstream fin(argv[1], fstream::in);
+    string load_line;
+    
+    unsigned int prev = 0;
+    
+    while(getline(fin, load_line)){
+        cout << load_line << endl;
+        char temp_line[load_line.length()+1];
+        strcpy(temp_line,load_line.c_str());
+        string load_src = strtok(temp_line, " ");
+        string load_dest = strtok( NULL ,  " "); 
+        
+        if(prev != stoul(load_src)){
+            graph.emplace_back(outgoing_edges);
+            outgoing_edges.clear();
+            for(int i = 0; i < stoul(load_src)-(prev+1);++i){ 
+                graph.emplace_back(outgoing_edges);
+            }
+            if(prev > stoul(load_src)){
+                cerr << "nodes out of order" << endl;
+                return 1;
+            } 
+        }
+        
+        
+        
+        if (prev < 5){
+            cout << stoul(load_src) << "::" << stoul(load_dest) << endl;
+        }
+        outgoing_edges.emplace_back(make_pair(stoul(load_dest),1));
+        prev = stoul(load_src);
+    }
+    
+    cout << graph.at(4).at(0).first << endl;
+    for(unsigned i = 0;  i < graph.size() ; ++i){
+        cost.emplace_back();
+        (cost.at(i)) = cilk::aligned_new< cilk::reducer<valueMonoid> >();
+    }
+/*
     outgoing_edges.emplace_back(make_pair(1,4));
     outgoing_edges.emplace_back(make_pair(2,2));
     graph.emplace_back(outgoing_edges);
@@ -157,9 +192,9 @@ int main(){
          cout << e.value << endl;
      }
      */
-     cout <<"red" << endl;
-     for(unsigned i = 0; cost.size() > i ; ++i){
-         cout << cost.at(i)->view_get_value() << endl;
-     }
+    //  cout <<"red" << endl;
+    //  for(unsigned i = 0; cost.size() > i ; ++i){
+    //      cout << (*cost.at(i))->view_get_value() << endl;
+    //  }
     return 0;
 }

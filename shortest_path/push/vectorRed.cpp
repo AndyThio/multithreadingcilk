@@ -18,8 +18,9 @@ void vectorRed::expand(){
     }
     for (unsigned int i = 0; i < sz-1; i++)
     {
-        auto temp2 = elements[i]->view_get_value();
-        temp[i]->add_compare(temp2);
+        unsigned int temp_value = elements[i]->view_get_value();
+        unsigned int temp_index = elements[i]->view_get_index();
+        temp[i]->add_compare(temp_value,temp_index);
     }
     free(elements);
     
@@ -31,15 +32,30 @@ vectorRed::vectorRed()
     :elements(0),sz(0),cap(0)
 {}
 
+vectorRed::vectorRed(unsigned int size){
+    cap = size+1;
+    elements = (cilk::reducer<valueMonoid>*)malloc(cap);
+    sz = size;
+    for (unsigned int j = 0; j < sz; j++){
+        elements[j]=cilk::aligned_new< cilk::reducer<valueMonoid> >();
+        elements[j]->reset_value();
+    }
+    for (unsigned int j = 0; j < sz; j++){
+        cout << elements[j]->view_get_value() << endl;
+    }
+    cout << endl;
+}
 
 vectorRed::vectorRed(const vectorRed &copyfrom){
     if(cap < copyfrom.cap){
         expand();
     }
+    cout << "copying" << endl;
     for (unsigned int i = 0; i < sz; i++)
     {
-        auto temp = copyfrom.elements[i]->view_get_value();
-        elements[i]->add_compare(temp);
+        unsigned int temp_value = copyfrom.elements[i]->view_get_value();
+        unsigned int temp_index = copyfrom.elements[i]->view_get_index();
+        elements[i]->add_compare(temp_value,temp_index);
     }
 }
 
@@ -49,16 +65,12 @@ vectorRed::~vectorRed(){
 }
 
 
-void vectorRed::push_back(unsigned int value){
+void vectorRed::push_back(unsigned int value, unsigned int index){
     ++sz;
     if(sz > cap){
         expand();
     }
-    cout <<elements[sz-1]->view_get_value() <<endl;
-    cout << "Value: " << value << endl;
-    elements[sz-1]->add_compare(value);
-    
-    cout <<elements[sz-1]->view_get_value() <<endl;
+    elements[sz-1]->add_compare(value, index);
 }
 
 
@@ -70,10 +82,9 @@ void vectorRed::pop_back(){
 }
 
 
-int vectorRed::size(){
+unsigned int vectorRed::size(){
     return sz;
 }
-
 
 cilk::reducer<valueMonoid> &vectorRed::at(unsigned int index){
     if (sz > index){

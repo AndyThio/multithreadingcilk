@@ -10,16 +10,17 @@ using namespace std;
 class vectorRed{
     private:
         cilk::reducer<valueMonoid> *elements;
-        int sz;
-        int cap;
+        unsigned int sz;
+        unsigned int cap;
     public:
         vectorRed();
+        vectorRed(unsigned int size);
         vectorRed(const vectorRed &copyfrom);
         ~vectorRed();
-        void push_back(unsigned int value);
+        void push_back(unsigned int value, unsigned int index);
         void pop_back();
-        int size();
-        cilk::reducer<valueMonoid> & at(unsigned index);
+        unsigned int size();
+        cilk::reducer<valueMonoid> & at(unsigned int index);
     private:
         void expand();
         

@@ -11,6 +11,7 @@
 #include <utility>
 #include <atomic>
 #include <limits>
+#include <sstream>
 
 using namespace std;
 using namespace std::chrono;
@@ -43,8 +44,9 @@ void update_red(unsigned int index, vector<vector<pair<int,unsigned int> > > &gr
 
     if((*cost.at(index))->is_lessthan(value)){
         (*cost.at(index))->add_compare(value,prev_index);
-        
+
         cilk_for(int i = 0; i < graph.at(index).size(); ++i){
+        //cilk_for(int i = 0; i < 1; ++i){
             update_red(graph.at(index).at(i).first, graph, cost,
               graph.at(index).at(i).second+value, index);
         }
@@ -65,46 +67,48 @@ int main(int argc, char* argv[]){
     vector<pair<int,unsigned int> > outgoing_edges;
     vector<vector<pair<int,unsigned int> > > graph;
     vector<cilk::reducer<valueMonoid>* > cost;
-    
+/*
     fstream fin(argv[1], fstream::in);
     string load_line;
-    
+
     unsigned int prev = 0;
-    
     while(getline(fin, load_line)){
         cout << load_line << endl;
-        char temp_line[load_line.length()+1];
-        strcpy(temp_line,load_line.c_str());
-        string load_src = strtok(temp_line, " ");
-        string load_dest = strtok( NULL ,  " "); 
-        
-        if(prev != stoul(load_src)){
+        unsigned int to;
+        unsigned int from;
+
+        istringstream load(load_line);
+        load >> to >> from;
+
+        if(prev != to){
             graph.emplace_back(outgoing_edges);
             outgoing_edges.clear();
-            for(int i = 0; i < stoul(load_src)-(prev+1);++i){ 
+            for(int i = 0; i < to-(prev+1);++i){
                 graph.emplace_back(outgoing_edges);
             }
-            if(prev > stoul(load_src)){
+            if(prev > to){
                 cerr << "nodes out of order" << endl;
                 return 1;
-            } 
+            }
         }
-        
-        
-        
+
+
+
         if (prev < 5){
-            cout << stoul(load_src) << "::" << stoul(load_dest) << endl;
+            cout << to << "::" << from << endl;
         }
-        outgoing_edges.emplace_back(make_pair(stoul(load_dest),1));
-        prev = stoul(load_src);
+        outgoing_edges.emplace_back(make_pair(from,1));
+        prev = to;
     }
-    
-    cout << graph.at(4).at(0).first << endl;
-    for(unsigned i = 0;  i < graph.size() ; ++i){
+            graph.emplace_back(outgoing_edges);
+*/
+    for(unsigned i = 0;  i < 6; ++i){
         cost.emplace_back();
         (cost.at(i)) = cilk::aligned_new< cilk::reducer<valueMonoid> >();
+
     }
-/*
+
+
     outgoing_edges.emplace_back(make_pair(1,4));
     outgoing_edges.emplace_back(make_pair(2,2));
     graph.emplace_back(outgoing_edges);
@@ -125,14 +129,14 @@ int main(int argc, char* argv[]){
     outgoing_edges.clear();
     outgoing_edges.emplace_back(make_pair(3,4));
     graph.emplace_back(outgoing_edges);
-    
+
     outgoing_edges.clear();
     graph.emplace_back(outgoing_edges);
-    
-    
-    
+
+
+
 /*
-    
+
     adjList_red list [24000];
     list[0].value -> add_compare(inf);
     cout << numeric_limits<unsigned int>::max()<< endl;
@@ -143,12 +147,12 @@ int main(int argc, char* argv[]){
      //graph2.emplace_back(new2);
      graph2.push_back(inf,23);
      graph2.push_back(15,23);
-     
+
      graph2.at(1)->add_compare(4,2);
      graph2.at(1)->add_compare(2,12);
      graph2.at(1)->add_compare(5,41);
 
-     
+
     return 0;
         */
 /*
@@ -184,6 +188,7 @@ int main(int argc, char* argv[]){
 */
      start = system_clock::now();
      update_red(0,graph,cost, 0,0);
+     //assert(false);
      end = system_clock::now();
      elapsed_time = end - start;
      cout << "Time elapsed: " << elapsed_time.count() << endl;
@@ -192,9 +197,9 @@ int main(int argc, char* argv[]){
          cout << e.value << endl;
      }
      */
-    //  cout <<"red" << endl;
-    //  for(unsigned i = 0; cost.size() > i ; ++i){
-    //      cout << (*cost.at(i))->view_get_value() << endl;
-    //  }
+      cout <<"red" << endl;
+      for(unsigned i = 0; cost.size() > i ; ++i){
+          cout << (*cost.at(i))->view_get_value() << endl;
+      }
     return 0;
 }

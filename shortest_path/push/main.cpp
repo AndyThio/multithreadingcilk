@@ -37,18 +37,17 @@ adjList_red& adjList_red::operator=(const adjList_red& copyfrom){
 */
 void update_red(unsigned int index, vector<vector<pair<int,unsigned int> > > &graph,
     vectorRed &cost, unsigned int value, unsigned int prev_index){
-        cout << "made it here" << endl;
         cout << "value: " << value << ";; index: " << index << endl;
         cout << cost.at(index)->view_get_value() << endl;
-        cout << "end information" << endl;
     if(cost.at(index)->is_lessthan(value)){
-        cout << "made it here too" << endl;
         cost.at(index)->add_compare(value,prev_index);
-        
-        cilk_for(int i = 0; i < graph.at(index).size(); ++i){
-            update_red(graph.at(index).at(i).first, graph, cost,
+
+        cout << "second value: " << value << ";; index: " << index << endl;
+        for(int i = 0; i < graph.at(index).size(); ++i){
+            cilk_spawn update_red(graph.at(index).at(i).first, graph, cost,
               graph.at(index).at(i).second+value, index);
         }
+        cilk_sync;
     }
  }
 
@@ -66,9 +65,9 @@ int main(){
     vector<pair<int,unsigned int> > outgoing_edges;
     vector<vector<pair<int,unsigned int> > > graph;
     vectorRed cost(6);
-    for(unsigned i = 0; cost.size() > i ; ++i){
-         cout << cost.at(i)->view_get_value() << endl;
-     }
+
+    cout << sizeof(cilk::reducer<valueMonoid> ) << endl;
+    return 0;
 
     outgoing_edges.emplace_back(make_pair(1,4));
     outgoing_edges.emplace_back(make_pair(2,2));
@@ -90,14 +89,24 @@ int main(){
     outgoing_edges.clear();
     outgoing_edges.emplace_back(make_pair(3,4));
     graph.emplace_back(outgoing_edges);
-    
+
     outgoing_edges.clear();
     graph.emplace_back(outgoing_edges);
-    
-    
-    
+
+    cout << graph.size() << endl;
+    cout << graph.at(0).at(0).first << endl;
+    for(unsigned int i= 0; i < graph.size(); ++i){
+        for(unsigned int j= 0; j < graph.at(i).size(); ++j){
+            cout << "vectex: " << i << ";; edge: " << graph.at(i).at(j).first << ";; weight: " << graph.at(i).at(j).second << endl;
+        }
+    }
+
+
+    for(unsigned i = 0; cost.size() > i ; ++i){
+         cout << cost.at(i)->view_get_value() << endl;
+     }
 /*
-    
+
     adjList_red list [24000];
     list[0].value -> add_compare(inf);
     cout << numeric_limits<unsigned int>::max()<< endl;
@@ -108,12 +117,12 @@ int main(){
      //graph2.emplace_back(new2);
      graph2.push_back(inf,23);
      graph2.push_back(15,23);
-     
+
      graph2.at(1)->add_compare(4,2);
      graph2.at(1)->add_compare(2,12);
      graph2.at(1)->add_compare(5,41);
 
-     
+
     return 0;
         */
 /*
@@ -149,6 +158,7 @@ int main(){
 */
      start = system_clock::now();
      update_red(0,graph,cost, 0,0);
+     assert(false);
      end = system_clock::now();
      elapsed_time = end - start;
      cout << "Time elapsed: " << elapsed_time.count() << endl;

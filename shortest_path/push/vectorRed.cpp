@@ -12,18 +12,18 @@ void vectorRed::expand(){
         cap = 1;
     }
     cap *= 2;
-    cilk::reducer<valueMonoid>* temp = (cilk::reducer<valueMonoid>*)malloc(cap);
+    cilk::reducer<valueMonoid>* temp = (cilk::reducer<valueMonoid>*)malloc(cap * sizeof(cilk::reducer<valueMonoid>));
     for (unsigned int j = 0; j < cap; j++){
         temp[j]->reset_value();
     }
-    for (unsigned int i = 0; i < sz-1; i++)
+    for (unsigned int i = 0; i < sz; i++)
     {
         unsigned int temp_value = elements[i]->view_get_value();
         unsigned int temp_index = elements[i]->view_get_index();
         temp[i]->add_compare(temp_value,temp_index);
     }
     free(elements);
-    
+
     elements = temp;
 }
 
@@ -34,10 +34,9 @@ vectorRed::vectorRed()
 
 vectorRed::vectorRed(unsigned int size){
     cap = size+1;
-    elements = (cilk::reducer<valueMonoid>*)malloc(cap);
+    elements = (cilk::reducer<valueMonoid>*)malloc(cap * sizeof(cilk::reducer<valueMonoid>));
     sz = size;
     for (unsigned int j = 0; j < sz; j++){
-        elements[j]=cilk::aligned_new< cilk::reducer<valueMonoid> >();
         elements[j]->reset_value();
     }
     for (unsigned int j = 0; j < sz; j++){
@@ -50,7 +49,6 @@ vectorRed::vectorRed(const vectorRed &copyfrom){
     if(cap < copyfrom.cap){
         expand();
     }
-    cout << "copying" << endl;
     for (unsigned int i = 0; i < sz; i++)
     {
         unsigned int temp_value = copyfrom.elements[i]->view_get_value();
@@ -66,10 +64,10 @@ vectorRed::~vectorRed(){
 
 
 void vectorRed::push_back(unsigned int value, unsigned int index){
-    ++sz;
-    if(sz > cap){
+    if(sz+1 > cap){
         expand();
     }
+    ++sz;
     elements[sz-1]->add_compare(value, index);
 }
 

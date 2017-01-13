@@ -53,6 +53,17 @@ void update_red(unsigned int index, vector<vector<pair<int,unsigned int> > > &gr
     }
  }
 
+//param: end index to find, cost graph
+vector<int> find_path_to(unsigned int index, const vector<cilk::reducer<valueMonoid>* > &cost){
+    cilk::reducer<valueMonoid> temp = cost.at(index);
+    vector<int> ret;
+    while(temp->view_get_value() != 0){
+        ret.push_back(temp->view_get_index);
+        temp = cost.at(temp->view_get_index());
+    }
+    ret.push_back(temp->view_get_index);
+    return ret;
+}
 // void update(unsigned int index,  vector<adjList> &graph, unsigned int value){
 //     if(value < graph.at(index).value){
 //         graph.at(index).value = value;
@@ -67,6 +78,7 @@ int main(int argc, char* argv[]){
     vector<pair<int,unsigned int> > outgoing_edges;
     vector<vector<pair<int,unsigned int> > > graph;
     vector<cilk::reducer<valueMonoid>* > cost;
+
 /*
     fstream fin(argv[1], fstream::in);
     string load_line;
@@ -93,15 +105,18 @@ int main(int argc, char* argv[]){
         }
 
 
-
+        //uncomment for printing out first 5 entries
         if (prev < 5){
             cout << to << "::" << from << endl;
         }
         outgoing_edges.emplace_back(make_pair(from,1));
         prev = to;
     }
-            graph.emplace_back(outgoing_edges);
+    
+    graph.emplace_back(outgoing_edges);
+    
 */
+    //this is used for the smaller graph
     for(unsigned i = 0;  i < 6; ++i){
         cost.emplace_back();
         (cost.at(i)) = cilk::aligned_new< cilk::reducer<valueMonoid> >();

@@ -48,7 +48,7 @@ void update_red(unsigned int index, vector<vector<pair<unsigned int,unsigned int
     cout << "end data" << endl;
     if(index < cost.size() && (*cost.at(index))->is_lessthan(value)){
         cout << "inside if" << endl;
-        //(*cost.at(index))->add_compare(value,prev_index);
+        (*cost.at(index))->add_compare(value,prev_index);
         for(int i = 0; i < graph.at(index).size(); ++i){
     cout << "added cost" << graph.at(index).at(i).second<< endl;
         //cilk_for(int i = 0; i < 1; ++i){
@@ -59,7 +59,7 @@ void update_red(unsigned int index, vector<vector<pair<unsigned int,unsigned int
         cout << "inside for" << endl;
             update_red(graph.at(index).at(i).first, graph, cost,
               graph.at(index).at(i).second+value, index);
-              
+
             cout << "something"<< endl;
         }
     }
@@ -103,18 +103,19 @@ int main(int argc, char* argv[]){
     string load_line;
 
     unsigned int prev = 0;
-    while(getline(fin, load_line)){
-        unsigned int to;
-        unsigned int from;
+    //while(getline(fin, load_line)){
+    unsigned int to;
+    unsigned int from;
+    while(fin >> to >> from) {
 
-        istringstream load(load_line);
-        load >> to >> from;
+        //istringstream load(load_line);
+        //load >> to >> from;
 
         if(prev != to){
-            graph.emplace_back(outgoing_edges);
+            graph.push_back(outgoing_edges);
             outgoing_edges.clear();
             for(unsigned int i = 0; i < to-(prev+1);++i){
-                graph.emplace_back(outgoing_edges);
+                graph.push_back(outgoing_edges);
             }
             if(prev > to){
                 cerr << "nodes out of order" << endl;
@@ -128,19 +129,18 @@ int main(int argc, char* argv[]){
         if (prev < 5){
             cout << to << "::" << from << endl;
         }
-        outgoing_edges.emplace_back(make_pair(from,1));
+        outgoing_edges.push_back(make_pair(from,1));
         prev = to;
     }
-    
-    graph.emplace_back(outgoing_edges);
+
+    graph.push_back(outgoing_edges);
 
     for(unsigned i = 0;  i < graph.size(); ++i){
-        cost.emplace_back();
-        (cost.at(i)) = cilk::aligned_new< cilk::reducer<valueMonoid> >();
+        cost.push_back( cilk::aligned_new< cilk::reducer<valueMonoid> >());
 
     }
 
-/*    
+/*
 
     outgoing_edges.emplace_back(make_pair(1,4));
     outgoing_edges.emplace_back(make_pair(2,2));
@@ -221,7 +221,6 @@ int main(int argc, char* argv[]){
 */
      start = system_clock::now();
      update_red(0,graph,cost, 0,0);
-     assert(false);
      end = system_clock::now();
      elapsed_time = end - start;
      cout << "Time elapsed: " << elapsed_time.count() << endl;
@@ -234,6 +233,5 @@ int main(int argc, char* argv[]){
           cout << (*cost.at(i))->view_get_value() << endl;
       }
      */
-      assert(false);
     return 0;
 }

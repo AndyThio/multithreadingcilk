@@ -41,30 +41,12 @@ adjList_red& adjList_red::operator=(const adjList_red& copyfrom){
 */
 void update_red(unsigned int index, vector<vector<pair<unsigned int,unsigned int> > > &graph,
     vector<cilk::reducer<valueMonoid>* > &cost, unsigned int value, unsigned int prev_index){
-        /*
-    cout << "before if" << endl;
-    cout << "value: " << value << endl;
-    cout << "index: " << index << endl;
-        cout << graph.size() << endl;
-    cout << "end data" << endl;
-    */
     if(index < cost.size() && (*cost.at(index))->is_lessthan(value)){
-        // cout << "inside if" << endl;
         (*cost.at(index))->add_compare(value,prev_index);
-        for(int i = 0; i < graph.at(index).size(); ++i){
-    // cout << "added cost" << graph.at(index).at(i).second<< endl;
-        //cilk_for(int i = 0; i < 1; ++i){
-        // graph.at(index).at(i).first;
-        /*
-        cout << graph.at(index).size() << endl;
-        cout << i << endl;
-        cout << graph.at(index).at(i).second+value << endl;
-        cout << "inside for" << endl;
-        */
+        
+        cilk_for(int i = 0; i < graph.at(index).size(); ++i){
             update_red(graph.at(index).at(i).first, graph, cost,
               graph.at(index).at(i).second+value, index);
-
-            // cout << "something"<< endl;
         }
     }
  }

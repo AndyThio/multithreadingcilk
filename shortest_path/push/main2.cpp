@@ -41,26 +41,30 @@ adjList_red& adjList_red::operator=(const adjList_red& copyfrom){
 */
 void update_red(unsigned int index, vector<vector<pair<unsigned int,unsigned int> > > &graph,
     vector<cilk::reducer<valueMonoid>* > &cost, unsigned int value, unsigned int prev_index){
+        /*
     cout << "before if" << endl;
     cout << "value: " << value << endl;
     cout << "index: " << index << endl;
         cout << graph.size() << endl;
     cout << "end data" << endl;
+    */
     if(index < cost.size() && (*cost.at(index))->is_lessthan(value)){
-        cout << "inside if" << endl;
+        // cout << "inside if" << endl;
         (*cost.at(index))->add_compare(value,prev_index);
         for(int i = 0; i < graph.at(index).size(); ++i){
-    cout << "added cost" << graph.at(index).at(i).second<< endl;
+    // cout << "added cost" << graph.at(index).at(i).second<< endl;
         //cilk_for(int i = 0; i < 1; ++i){
         // graph.at(index).at(i).first;
+        /*
         cout << graph.at(index).size() << endl;
         cout << i << endl;
-        // cout << graph.at(index).at(i).second+value << endl;
+        cout << graph.at(index).at(i).second+value << endl;
         cout << "inside for" << endl;
+        */
             update_red(graph.at(index).at(i).first, graph, cost,
               graph.at(index).at(i).second+value, index);
 
-            cout << "something"<< endl;
+            // cout << "something"<< endl;
         }
     }
  }
@@ -110,30 +114,11 @@ int main(int argc, char* argv[]){
 
         //istringstream load(load_line);
         //load >> to >> from;
-
-        if(prev != to){
-            graph.push_back(outgoing_edges);
-            outgoing_edges.clear();
-            for(unsigned int i = 0; i < to-(prev+1);++i){
-                graph.push_back(outgoing_edges);
-            }
-            if(prev > to){
-                cerr << "nodes out of order" << endl;
-                return 1;
-            }
+        if(to >= graph.size()){
+            graph.resize(to+1);
         }
-
-
-
-        //uncomment for printing out first 5 entries
-        if (prev < 5){
-            cout << to << "::" << from << endl;
-        }
-        outgoing_edges.push_back(make_pair(from,1));
-        prev = to;
+        graph.at(to).push_back(make_pair(from,1));
     }
-
-    graph.push_back(outgoing_edges);
 
     for(unsigned i = 0;  i < graph.size(); ++i){
         cost.push_back( cilk::aligned_new< cilk::reducer<valueMonoid> >());
@@ -228,10 +213,12 @@ int main(int argc, char* argv[]){
      for(auto &e: graph){
          cout << e.value << endl;
      }
+     
       cout <<"red" << endl;
+     */
+     //large 4294967295 means infinity or otherwise unreachable
       for(unsigned i = 0; cost.size() > i ; ++i){
           cout << (*cost.at(i))->view_get_value() << endl;
       }
-     */
     return 0;
 }

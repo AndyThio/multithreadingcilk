@@ -25,9 +25,10 @@ void update_red(unsigned int index, vector<vector<pair<unsigned int,unsigned int
     if(index < cost.size() && (*cost.at(index))->is_lessthan(value)){
         (*cost.at(index))->add_compare(value,prev_index);
         
-        cilk_for(int i = 0; i < graph.at(index).size(); ++i){
-            update_red(graph.at(index).at(i).first, graph, cost,
-              graph.at(index).at(i).second+value, index);
+        cilk_for(unsigned int i = 0; i < graph.at(index).size(); ++i){
+            unsigned int new_index = graph.at(index).at(i).first;
+            unsigned int new_value = graph.at(index).at(i).second+value;
+            update_red(new_index, graph, cost, new_value, index);
         }
     }
  }
@@ -67,6 +68,9 @@ int main(int argc, char* argv[]){
 
         if(to >= graph.size()){
             graph.resize(to+1);
+        }
+        if(from >= graph.size()){
+            graph.resize(from+1);
         }
         graph.at(to).push_back(make_pair(from,1));
     }

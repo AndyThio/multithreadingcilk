@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <chrono>
 #include <cilk/cilk.h>
 #include <cilk/cilk_api.h>
@@ -13,15 +14,21 @@ using namespace std;
 using namespace std::chrono;
 
 const unsigned int inf = numeric_limits<unsigned int>::max();
+bool changed = false;
 
  struct adjList{
      atomic<unsigned int> value;
-     vector<pair<int,int> > incoming_edges;
+     vector<pair<unsigned int,unsigned int> > incoming_edges = {};
      
+     adjList();
      adjList(unsigned int a);
      adjList(const adjList& copyfrom);
      adjList& operator=(const adjList& copyfrom);
  };
+ 
+adjList::adjList(){
+    value.exchange(inf);
+}
 
 adjList::adjList(unsigned int a){
     value.exchange(a);
@@ -30,13 +37,13 @@ adjList::adjList(unsigned int a){
 adjList::adjList(const adjList& copyfrom){
     value.exchange(copyfrom.value);
     for(auto &e: copyfrom.incoming_edges){
-        incoming_edges.emplace_back(e);
+        incoming_edges.push_back(e);
     }
 }
 adjList& adjList::operator=(const adjList& copyfrom){
     value.exchange(copyfrom.value);
     for(auto &e: copyfrom.incoming_edges){
-        incoming_edges.emplace_back(e);
+        incoming_edges.push_back(e);
     }
 }
 bool non_inf(vector<adjList> &v){
@@ -60,13 +67,15 @@ void edgeCentric(pair<int,int> edge,int index , vector<adjList> &v){
         }
         if(temp > p){
             temp = p;
+            changed = true;
         }
     // cout << "Old: " << old << endl << "temp: " << temp << endl << endl;
     }while(!v.at(index).value.compare_exchange_strong(old, temp));
 }
 
-int main(){
+int main(int argc, char* argv[]){
     vector<adjList> graph;
+    /*
     adjList new1(inf);
     new1.value.exchange(0);
     graph.emplace_back(new1);
@@ -93,6 +102,25 @@ int main(){
     new1.incoming_edges.clear();
     new1.incoming_edges.emplace_back(make_pair(3,11));
     graph.emplace_back(new1);
+    */
+    
+    fstream fin(argv[1], fstream::in);
+    unsigned int from, to; 
+    
+    while(fin >> from >> to) {
+
+        if(to >= graph.size()){
+            graph.resize(to+1);
+        }
+        if(from >= graph.size()){
+            graph.resize(from+1);
+        }
+        graph.at(to).incoming_edges.push_back(make_pair(from,1));
+    }
+    
+    graph.at(0).value.exchange(0);
+    
+    
     
     // for(auto &e: graph){
     //     cout << e.value << endl;
@@ -132,15 +160,16 @@ int main(){
     duration<double> elapsed_time;
     
     start = system_clock::now();
-    while(!non_inf(graph)){
-        cilk_for(unsigned int i = 0; i < graph.size(); ++i){
-            cilk_for(unsigned int j = 0; j < graph.at(i).incoming_edges.size(); ++j){
+    while(!changed){
+        changed = false;
+        for(unsigned int i = 0; i < graph.size(); ++i){
+            for(unsigned int j = 0; j < graph.at(i).incoming_edges.size(); ++j){
                 edgeCentric(graph.at(i).incoming_edges.at(j), i, graph);
             }
         }
     }
-    cilk_for(unsigned int i = 0; i < graph.size(); ++i){
-        cilk_for(unsigned int j = 0; j < graph.at(i).incoming_edges.size(); ++j){
+    for(unsigned int i = 0; i < graph.size(); ++i){
+        for(unsigned int j = 0; j < graph.at(i).incoming_edges.size(); ++j){
             edgeCentric(graph.at(i).incoming_edges.at(j), i, graph);
         }
     }
@@ -148,15 +177,15 @@ int main(){
     end = system_clock::now();
     elapsed_time = end - start;
     cout << "Time elapsed: " << elapsed_time.count() << endl;
-    
+    for(auto &e: graph){
+        cout << e.value<< endl;
+    }
     // start = system_clock::now();
     // update_red(0,graph2, 0);
     // end = system_clock::now();
     // elapsed_time = end - start;
-    cout << "Time elapsed: " << elapsed_time.count() << endl;
-    for(auto &e: graph){
-        cout << e.value << endl;
-    }
+    // cout << "Time elapsed: " << elapsed_time.count() << endl;
+    
     // cout <<"red" << endl;
     // for(auto &e: graph2){
     //     cout << e.value << endl;

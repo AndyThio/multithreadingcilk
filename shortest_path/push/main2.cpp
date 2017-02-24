@@ -29,6 +29,7 @@ void update_red(unsigned int index, vector<vector<pair<unsigned int,unsigned int
             unsigned int new_index = graph.at(index).at(i).first;
             unsigned int new_value = graph.at(index).at(i).second+value;
             update_red(new_index, graph, cost, new_value, index);
+            // Empty continuation?
         }
     }
  }
@@ -65,7 +66,6 @@ int main(int argc, char* argv[]){
     unsigned int to;
     unsigned int from;
     while(fin >> to >> from) {
-
         if(to >= graph.size()){
             graph.resize(to+1);
         }
@@ -90,8 +90,9 @@ int main(int argc, char* argv[]){
      cout << "Time elapsed: " << elapsed_time.count() << endl;
 
      //large 4294967295 means infinity or otherwise unreachable
-      for(unsigned i = 0; cost.size() > i ; ++i){
-          cout << (*cost.at(i))->view_get_value() << endl;
-      }
+     print_shortest(25, cost);
+    //   for(unsigned i = 0; cost.size() > i ; ++i){
+    //       cout << (*cost.at(i))->view_get_value() << endl;
+    //   }
     return 0;
 }

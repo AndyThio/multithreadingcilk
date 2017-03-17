@@ -22,8 +22,9 @@ const unsigned int inf = numeric_limits<unsigned int>::max();
 
 void update_red(unsigned int index, vector<vector<pair<unsigned int,unsigned int> > > &graph,
     vector<cilk::reducer<valueMonoid>* > &cost, unsigned int value, unsigned int prev_index){
-    if(index < cost.size() && (*cost.at(index))->is_lessthan(value)){
-        (*cost.at(index))->add_compare(value,prev_index);
+    unsigned int temp_value = (*cost.at(index))->view_get_value();
+    (*cost.at(index))->add_compare(value,prev_index);
+    if(temp_value != (*cost.at(index))->view_get_value()){
         
         cilk_for(unsigned int i = 0; i < graph.at(index).size(); ++i){
             unsigned int new_index = graph.at(index).at(i).first;

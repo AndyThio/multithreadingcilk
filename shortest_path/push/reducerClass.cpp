@@ -14,10 +14,8 @@ class valueView{
     unsigned int index;
     public:
         void add_compare(unsigned int updated, unsigned int new_index){
-            if(value > updated){
-                value = updated;
-                index = new_index;
-            }
+            value = updated;
+            index = new_index;
         }
         void reset_value(){
             value = numeric_limits<unsigned int>::max();
